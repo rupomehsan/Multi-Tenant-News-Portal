@@ -9,13 +9,14 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    protected $baseRouteAdmin = 'tenant.admin.pages.categories.';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $categories = Category::withCount('news')->paginate(15);
-        return view('tenant.categories.index', compact('categories'));
+        return view($this->baseRouteAdmin . 'index', compact('categories'));
     }
 
     /**
@@ -23,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('tenant.categories.create');
+        return view($this->baseRouteAdmin . 'create');
     }
 
     /**
@@ -43,7 +44,7 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        return redirect()->route('tenant.categories.index')
+        return redirect()->route($this->baseRouteAdmin . 'index')
             ->with('success', 'Category created successfully!');
     }
 
@@ -53,7 +54,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $category->load('news');
-        return view('tenant.categories.show', compact('category'));
+        return view($this->baseRouteAdmin . 'show', compact('category'));
     }
 
     /**
@@ -61,7 +62,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('tenant.categories.edit', compact('category'));
+        return view($this->baseRouteAdmin . 'edit', compact('category'));
     }
 
     /**
@@ -81,7 +82,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return redirect()->route('tenant.categories.index')
+        return redirect()->route($this->baseRouteAdmin . 'index')
             ->with('success', 'Category updated successfully!');
     }
 
@@ -96,7 +97,7 @@ class CategoryController extends Controller
         }
 
         $category->delete();
-        return redirect()->route('tenant.categories.index')
+        return redirect()->route($this->baseRouteAdmin . 'index')
             ->with('success', 'Category deleted successfully!');
     }
 }

@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('landlord.frontend.layouts.index')
 
 @section('title', 'Register a Tenant')
 
 @section('content')
-    @include('landlord.header')
+
     <section class="py-16 bg-gray-50">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white shadow-lg rounded-2xl p-8">

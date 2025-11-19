@@ -1,4 +1,4 @@
-@extends('landlord.layout')
+@extends('landlord.admin.layouts.index')
 
 @section('title', 'Tenant Details - ' . $tenant->name)
 
@@ -99,47 +99,19 @@
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Tenant Statistics</h2>
         <div class="grid md:grid-cols-4 gap-4">
             <div class="text-center">
-                <div class="text-2xl font-bold text-blue-600">
-                    @php
-                        tenancy()->initialize($tenant);
-                        $newsCount = \App\Models\News::count();
-                        tenancy()->end();
-                    @endphp
-                    {{ $newsCount }}
-                </div>
+                <div class="text-2xl font-bold text-blue-600">{{ $newsCount ?? 0 }}</div>
                 <div class="text-sm text-gray-600">Total Articles</div>
             </div>
             <div class="text-center">
-                <div class="text-2xl font-bold text-green-600">
-                    @php
-                        tenancy()->initialize($tenant);
-                        $publishedCount = \App\Models\News::published()->count();
-                        tenancy()->end();
-                    @endphp
-                    {{ $publishedCount }}
-                </div>
+                <div class="text-2xl font-bold text-green-600">{{ $publishedCount ?? 0 }}</div>
                 <div class="text-sm text-gray-600">Published Articles</div>
             </div>
             <div class="text-center">
-                <div class="text-2xl font-bold text-purple-600">
-                    @php
-                        tenancy()->initialize($tenant);
-                        $categoryCount = \App\Models\Category::count();
-                        tenancy()->end();
-                    @endphp
-                    {{ $categoryCount }}
-                </div>
+                <div class="text-2xl font-bold text-purple-600">{{ $categoryCount ?? 0 }}</div>
                 <div class="text-sm text-gray-600">Categories</div>
             </div>
             <div class="text-center">
-                <div class="text-2xl font-bold text-orange-600">
-                    @php
-                        tenancy()->initialize($tenant);
-                        $userCount = \App\Models\User::count();
-                        tenancy()->end();
-                    @endphp
-                    {{ $userCount }}
-                </div>
+                <div class="text-2xl font-bold text-orange-600">{{ $userCount ?? 0 }}</div>
                 <div class="text-sm text-gray-600">Users</div>
             </div>
         </div>
@@ -148,13 +120,7 @@
     <!-- Recent Activity -->
     <div class="mt-6 bg-white rounded-lg shadow p-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Articles</h2>
-        @php
-            tenancy()->initialize($tenant);
-            $recentArticles = \App\Models\News::with('category')->latest()->take(5)->get();
-            tenancy()->end();
-        @endphp
-
-        @if ($recentArticles->count() > 0)
+        @if (!empty($recentArticles) && $recentArticles->count() > 0)
             <div class="space-y-3">
                 @foreach ($recentArticles as $article)
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded">

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Landlord\HomeController;
 use App\Http\Controllers\Landlord\TenantController;
+use App\Http\Controllers\Landlord\ProfileController;
+use App\Http\Controllers\Landlord\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,13 +29,20 @@ Route::middleware([
                 'is_tenant_route' => false
             ];
         });
-
         // Public Routes
         Route::get('/', [HomeController::class, 'index'])->name('home');
         // Tenant registration (public)
         Route::get('/tenant/register', function () {
-            return view('landlord.tenant-register');
+            return view('landlord.frontend.pages.tenant-register.index');
         })->name('tenant.register');
+        Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
+        Route::get('/about', [HomeController::class, 'about'])->name('about');
+        Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+        Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.submit');
+        Route::get('/demo', [HomeController::class, 'demo'])->name('demo');
+
+
+
 
         Route::post('/tenant/register', function (\Illuminate\Http\Request $request) {
             $data = $request->validate([
@@ -58,10 +67,6 @@ Route::middleware([
                 return back()->withErrors(['error' => 'Failed to register tenant: ' . $e->getMessage()])->withInput();
             }
         })->name('tenant.register.submit');
-        Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
-        Route::get('/about', [HomeController::class, 'about'])->name('about');
-        Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-        Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.submit');
     });
 
     // Authentication Routes
@@ -79,9 +84,12 @@ Route::middleware([
 
     // Tenant Management
     Route::resource('tenants', TenantController::class);
+    // Site Settings Management
+    Route::get('/settings', [SettingsController::class, 'site'])->name('settings.site');
+    Route::post('/settings/site', [SettingsController::class, 'updateSite'])->name('settings.site.update');
 
     // Profile Management
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

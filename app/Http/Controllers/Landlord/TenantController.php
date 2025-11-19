@@ -10,13 +10,14 @@ use Stancl\Tenancy\Database\Models\Domain;
 
 class TenantController extends Controller
 {
+    protected $baseRoute = 'landlord.admin.pages.tenants.';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $tenants = Tenant::with('domains')->paginate(15);
-        return view('landlord.tenants.index', compact('tenants'));
+        return view($this->baseRoute . 'index', compact('tenants'));
     }
 
     /**
@@ -24,7 +25,7 @@ class TenantController extends Controller
      */
     public function create()
     {
-        return view('landlord.tenants.create');
+        return view($this->baseRoute . 'create');
     }
 
     /**
@@ -62,7 +63,7 @@ class TenantController extends Controller
     public function show(Tenant $tenant)
     {
         $tenant->load('domains');
-        return view('landlord.tenants.show', compact('tenant'));
+        return view($this->baseRoute . 'show', compact('tenant'));
     }
 
     /**
@@ -70,7 +71,7 @@ class TenantController extends Controller
      */
     public function edit(Tenant $tenant)
     {
-        return view('landlord.tenants.edit', compact('tenant'));
+        return view($this->baseRoute . 'edit', compact('tenant'));
     }
 
     /**

@@ -1,10 +1,8 @@
-@extends('layouts.app')
+@extends('landlord.frontend.layouts.index')
 
 @section('title', 'Build Your Own News Portal Instantly - NewsPortal SaaS')
 
 @section('content')
-    @include('landlord.header')
-
     <!-- HERO SECTION -->
     <section class="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-20 lg:py-32">
         <div
@@ -96,18 +94,60 @@
                                 <div>
                                     <div class="text-xs font-semibold uppercase tracking-wide text-indigo-200">Live Demo
                                     </div>
-                                    <div class="mt-1 text-xl font-bold text-white">prothomalo.localhost</div>
+
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                                    <span class="text-xs text-white font-medium">Live</span>
-                                </div>
+
                             </div>
 
-                            <!-- Demo Preview -->
-                            <div class="bg-white rounded-xl p-3 shadow-lg">
-                                <img src="https://via.placeholder.com/800x450/f3f4f6/6366f1?text=Modern+News+Portal"
-                                    alt="News Portal Demo" class="w-full rounded-lg object-cover">
+                            <!-- Demo Preview - Professional Card -->
+                            <div class="bg-white rounded-xl p-4 shadow-lg">
+                                <div class="flex items-center gap-4">
+                                    <!-- Mini screenshot / mock -->
+                                    <div
+                                        class="w-36 h-24 rounded-md overflow-hidden border border-gray-100 bg-gradient-to-br from-indigo-50 to-purple-50 flex-shrink-0">
+                                        <div class="p-3 h-full flex flex-col justify-between">
+                                            <div class="h-4 bg-indigo-200 rounded w-3/4"></div>
+                                            <div class="space-y-2 mt-2">
+                                                <div class="h-3 bg-indigo-100 rounded w-full"></div>
+                                                <div class="h-3 bg-indigo-100 rounded w-5/6"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Description + CTAs -->
+                                    <div class="flex-1">
+                                        <h3 class="text-gray-900 text-lg font-semibold">Clean, mobile-first article layout
+                                        </h3>
+                                        <p class="text-gray-600 text-sm mt-1">Optimized typography, fast loading and
+                                            beautiful imagery — a sample of how your content will appear.</p>
+
+                                        <div class="mt-3 flex items-center gap-3">
+                                            <a href="#demo"
+                                                class="inline-flex items-center gap-2 px-3 py-2 bg-indigo-600 text-white rounded-md text-sm font-semibold hover:bg-indigo-700 transition">Preview</a>
+                                            @php
+                                                $d = 'abc.localhost';
+                                                $demoUrl = strpos($d, 'http') === 0 ? $d : 'http://' . $d;
+                                                if (
+                                                    app()->environment('local') &&
+                                                    strpos($d, 'localhost') !== false &&
+                                                    strpos($demoUrl, ':8000') === false
+                                                ) {
+                                                    $demoUrl .= ':8000';
+                                                }
+                                            @endphp
+                                            <a href="{{ $demoUrl }}" target="_blank"
+                                                class="inline-flex items-center gap-2 px-3 py-2 bg-white text-indigo-600 rounded-md text-sm font-medium border border-indigo-100 hover:shadow">Visit
+                                                Demo</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Live badge -->
+                                    <div class="hidden sm:flex flex-col items-end">
+                                        <span
+                                            class="px-3 py-1 bg-green-500 text-white text-xs font-bold uppercase rounded-full shadow animate-pulse">Live</span>
+                                        <span class="text-xs text-gray-500 mt-2">Responsive • SEO</span>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Card Footer -->
@@ -187,8 +227,8 @@
                         <div class="flex-1">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">Custom Domains</h3>
                             <p class="text-gray-600">Use custom domains like <code
-                                    class="px-2 py-1 bg-gray-100 rounded text-xs">prothomalo.localhost</code> or <code
-                                    class="px-2 py-1 bg-gray-100 rounded text-xs">somoynews.localhost</code>.</p>
+                                    class="px-2 py-1 bg-gray-100 rounded text-xs">abc.com</code> or <code
+                                    class="px-2 py-1 bg-gray-100 rounded text-xs">xyz.com</code></p>
                         </div>
                     </div>
                 </div>
@@ -517,92 +557,106 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Demo 1 -->
-                <div
-                    class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
-                    <div class="relative h-64 overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100">
-                        <img src="https://via.placeholder.com/1200x600/e0e7ff/6366f1?text=Prothomalo+Demo"
-                            alt="Prothomalo Demo"
-                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
-                        <div
-                            class="absolute top-4 right-4 px-3 py-1 bg-green-500 text-white text-xs font-bold uppercase rounded-full shadow-lg flex items-center gap-1">
-                            <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                            Live
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-2 mb-3">
-                            <svg class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-xl font-bold text-gray-900">prothomalo.localhost</span>
-                        </div>
-                        <p class="text-gray-600 mb-4">A high-traffic Bengali news portal showcasing multimedia articles and
-                            real-time updates.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span
-                                class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">Multi-Language</span>
-                            <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Breaking
-                                News</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">Video
-                                Content</span>
-                        </div>
-                        <a href="http://prothomalo.localhost" target="_blank"
-                            class="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all">
-                            Visit Demo Site
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+                @if (!empty($demoSites) && $demoSites->count() > 0)
+                    @foreach ($demoSites as $demo)
+                        @php
+                            // Build an inline SVG data URI as a fallback background to avoid external placeholder services
+                            $title = $demo['name'] ?? ($demo['domain'] ?? 'Demo Site');
+                            $svg =
+                                '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#eef2ff"/><stop offset="100%" stop-color="#e9d5ff"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" fill="#4f46e5">' .
+                                e($title) .
+                                '</text></svg>';
+                            $bgData = 'data:image/svg+xml;utf8,' . rawurlencode($svg);
+                        @endphp
 
-                <!-- Demo 2 -->
-                <div
-                    class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
-                    <div class="relative h-64 overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100">
-                        <img src="https://via.placeholder.com/1200x600/fce7f3/c026d3?text=Somoynews+Demo"
-                            alt="Somoynews Demo"
-                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
                         <div
-                            class="absolute top-4 right-4 px-3 py-1 bg-green-500 text-white text-xs font-bold uppercase rounded-full shadow-lg flex items-center gap-1">
-                            <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                            Live
+                            class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                            <div
+                                class="relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center">
+                                <div class="w-full h-full bg-cover bg-center"
+                                    style="background-image: url('{{ $bgData }}');">
+                                </div>
+                                <div
+                                    class="absolute top-4 right-4 px-3 py-1 bg-green-500 text-white text-xs font-bold uppercase rounded-full shadow-lg flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                    Live
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <svg class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-xl font-bold text-gray-900">{{ $demo['domain'] ?? $demo['name'] }}</span>
+                                </div>
+                                <p class="text-gray-600 mb-4">
+                                    {{ $demo['description'] ?? 'Sample tenant site demonstrating the platform.' }}</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span
+                                        class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">Demo</span>
+                                </div>
+                                @if (!empty($demo['domain']))
+                                    <a href="{{ env('APP_ENV') === 'local' ? 'http://' . $demo['domain'] . ':8000' : 'http://' . $demo['domain'] }}"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all">Visit
+                                        Demo Site
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Fallback static demos -->
+                    <div
+                        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                        <div class="relative h-64 overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100">
+                            <img src="https://via.placeholder.com/1200x600/e0e7ff/6366f1?text=Prothomalo+Demo"
+                                alt="Prothomalo Demo"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute top-4 right-4 px-3 py-1 bg-green-500 text-white text-xs font-bold uppercase rounded-full shadow-lg flex items-center gap-1">
+                                <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>Live
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3"><span
+                                    class="text-xl font-bold text-gray-900">prothomalo.localhost</span></div>
+                            <p class="text-gray-600 mb-4">A high-traffic Bengali news portal showcasing multimedia articles
+                                and real-time updates.</p>
+                            <a href="http://prothomalo.localhost" target="_blank"
+                                class="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all">Visit
+                                Demo Site</a>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-2 mb-3">
-                            <svg class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-xl font-bold text-gray-900">somoynews.localhost</span>
+
+                    <div
+                        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                        <div class="relative h-64 overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100">
+                            <img src="https://via.placeholder.com/1200x600/fce7f3/c026d3?text=Somoynews+Demo"
+                                alt="Somoynews Demo"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <div
+                                class="absolute top-4 right-4 px-3 py-1 bg-green-500 text-white text-xs font-bold uppercase rounded-full shadow-lg flex items-center gap-1">
+                                <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>Live
+                            </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Regional news platform featuring local stories and comprehensive
-                            coverage.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span
-                                class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">Regional
-                                Focus</span>
-                            <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">Live
-                                Updates</span>
-                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-full">Social
-                                Integration</span>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3"><span
+                                    class="text-xl font-bold text-gray-900">somoynews.localhost</span></div>
+                            <p class="text-gray-600 mb-4">Regional news platform featuring local stories and comprehensive
+                                coverage.</p>
+                            <a href="http://somoynews.localhost" target="_blank"
+                                class="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all">Visit
+                                Demo Site</a>
                         </div>
-                        <a href="http://somoynews.localhost" target="_blank"
-                            class="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all">
-                            Visit Demo Site
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </section>
@@ -617,7 +671,7 @@
                 Join hundreds of publishers who trust our platform to deliver news to millions of readers.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ url('/register') }}"
+                <a href="{{ url('/tenant/register') }}"
                     class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-indigo-600 bg-white rounded-xl hover:bg-gray-50 transform hover:scale-105 transition-all duration-200 shadow-lg">
                     Start Free Trial
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -625,7 +679,7 @@
                             d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                 </a>
-                <a href="#demo"
+                <a href="{{ url('/demo') }}"
                     class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white border-2 border-white rounded-xl hover:bg-white hover:text-indigo-600 transition-all duration-200">
                     View Live Demos
                 </a>

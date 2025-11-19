@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    protected $baseRouteFrontEnd = 'landlord.frontend.pages.';
+    protected $baseRouteAdmin = 'landlord.admin.pages.';
     /**
      * Display the main SaaS landing page or tenant home
      */
@@ -22,7 +24,7 @@ class HomeController extends Controller
                 $query->published();
             }])->get();
 
-            return view('tenant.home', compact('featuredNews', 'latestNews', 'categories'));
+            return view('tenant.frontend.pages.home.index', compact('featuredNews', 'latestNews', 'categories'));
         }
 
         // Landlord pricing page
@@ -71,7 +73,22 @@ class HomeController extends Controller
             'domains' => \Stancl\Tenancy\Database\Models\Domain::count()
         ];
 
-        return view('landlord.home', compact('plans', 'stats'));
+        // Choose two featured demo tenants to showcase on the landing page.
+        // Prefer tenants that have at least one domain configured.
+        $demoSites = \App\Models\Tenant::with('domains')
+            ->whereHas('domains')
+            ->orderBy('created_at', 'desc')
+            ->take(2)
+            ->get()
+            ->map(function ($t) {
+                return [
+                    'name' => $t->name ?: ($t->id ?? 'Tenant'),
+                    'domain' => optional($t->domains->first())->domain ?? ($t->domain ?? null),
+                    'description' => $t->plan ? ucfirst($t->plan) . ' plan' : null,
+                ];
+            });
+
+        return view($this->baseRouteFrontEnd . 'home.index', compact('plans', 'stats', 'demoSites'));
     }
 
     /**
@@ -79,7 +96,7 @@ class HomeController extends Controller
      */
     public function pricing()
     {
-        return view('landlord.pricing');
+        return view($this->baseRouteFrontEnd . 'pricing.index');
     }
 
     /**
@@ -87,7 +104,26 @@ class HomeController extends Controller
      */
     public function about()
     {
-        return view('landlord.about');
+        return view($this->baseRouteFrontEnd . 'about.index');
+    }
+    public function demo()
+    {
+        // Provide all tenants that have a domain configured to the demo gallery
+        $demoSites = \App\Models\Tenant::with('domains')
+            ->whereHas('domains')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($t) {
+                return [
+                    'id' => $t->id,
+                    'name' => $t->name ?: ('Tenant ' . ($t->id ?? '')),
+                    'domain' => optional($t->domains->first())->domain ?? ($t->domain ?? null),
+                    'description' => $t->description ?? ($t->plan ? ucfirst($t->plan) . ' plan' : 'Sample tenant site'),
+                    'uses' => $t->tags ?? null,
+                ];
+            });
+
+        return view($this->baseRouteFrontEnd . 'demo.index', compact('demoSites'));
     }
 
     /**
@@ -95,7 +131,7 @@ class HomeController extends Controller
      */
     public function contact()
     {
-        return view('landlord.contact');
+        return view($this->baseRouteFrontEnd . 'contact.index');
     }
 
     /**
@@ -115,7 +151,7 @@ class HomeController extends Controller
         $activeTenants = \App\Models\Tenant::where('is_active', true)->count();
         $recentTenants = \App\Models\Tenant::with('domains')->latest()->take(5)->get();
 
-        return view('landlord.dashboard', compact('totalTenants', 'activeTenants', 'recentTenants'));
+        return view($this->baseRouteAdmin . 'dashboard.index', compact('totalTenants', 'activeTenants', 'recentTenants'));
     }
 
     /**

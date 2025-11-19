@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    protected $baseRouteFrontEnd = 'tenant.frontend.pages.';
+    protected $baseRouteAdmin = 'tenant.admin.pages.';
     /**
      * Display the tenant's home page with latest news
      */
@@ -20,7 +22,7 @@ class HomeController extends Controller
             $query->published();
         }])->get();
 
-        return view('tenant.home', compact('featuredNews', 'latestNews', 'categories'));
+        return view($this->baseRouteFrontEnd . 'home.index', compact('featuredNews', 'latestNews', 'categories'));
     }
 
     /**
@@ -38,7 +40,7 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        return view('tenant.news-detail', compact('news', 'relatedNews'));
+        return view($this->baseRouteFrontEnd . 'news.news-detail', compact('news', 'relatedNews'));
     }
 
     /**
@@ -52,7 +54,7 @@ class HomeController extends Controller
 
         $news = $category->news()->published()->latest()->paginate(12);
 
-        return view('tenant.category-news', compact('category', 'news'));
+        return view($this->baseRouteFrontEnd . 'news.category-news', compact('category', 'news'));
     }
 
     /**
@@ -63,6 +65,7 @@ class HomeController extends Controller
         $query = $request->get('q');
 
         $news = News::published()
+            ->with(['category', 'user'])
             ->where(function ($queryBuilder) use ($query) {
                 $queryBuilder->where('title', 'like', "%{$query}%")
                     ->orWhere('content', 'like', "%{$query}%")
@@ -71,6 +74,8 @@ class HomeController extends Controller
             ->latest()
             ->paginate(12);
 
-        return view('tenant.search-results', compact('news', 'query'));
+
+
+        return view($this->baseRouteFrontEnd . 'news.search-news', compact('news', 'query'));
     }
 }

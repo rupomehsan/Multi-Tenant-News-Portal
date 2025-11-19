@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 class NewsController extends Controller
 {
+    protected $baseRouteAdmin = 'tenant.admin.pages.news.';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $news = News::with(['category', 'user'])->latest()->paginate(15);
-        return view('tenant.news.index', compact('news'));
+        return view($this->baseRouteAdmin . 'index', compact('news'));
     }
 
     /**
@@ -26,7 +27,7 @@ class NewsController extends Controller
     public function create()
     {
         $categories = Category::active()->get();
-        return view('tenant.news.create', compact('categories'));
+        return view($this->baseRouteAdmin . 'create', compact('categories'));
     }
 
     /**
@@ -64,7 +65,7 @@ class NewsController extends Controller
 
         News::create($data);
 
-        return redirect()->route('tenant.news.index')
+        return redirect()->route($this->baseRouteAdmin . 'index')
             ->with('success', 'News article created successfully!');
     }
 
@@ -74,7 +75,7 @@ class NewsController extends Controller
     public function show(News $news)
     {
         $news->load(['category', 'user']);
-        return view('tenant.news.show', compact('news'));
+        return view($this->baseRouteAdmin . 'show', compact('news'));
     }
 
     /**
@@ -83,7 +84,7 @@ class NewsController extends Controller
     public function edit(News $news)
     {
         $categories = Category::active()->get();
-        return view('tenant.news.edit', compact('news', 'categories'));
+        return view($this->baseRouteAdmin . 'edit', compact('news', 'categories'));
     }
 
     /**
@@ -122,7 +123,7 @@ class NewsController extends Controller
 
         $news->update($data);
 
-        return redirect()->route('tenant.news.index')
+        return redirect()->route($this->baseRouteAdmin . 'index')
             ->with('success', 'News article updated successfully!');
     }
 
@@ -138,7 +139,7 @@ class NewsController extends Controller
 
         $news->delete();
 
-        return redirect()->route('tenant.news.index')
+        return redirect()->route($this->baseRouteAdmin . 'index')
             ->with('success', 'News article deleted successfully!');
     }
 }

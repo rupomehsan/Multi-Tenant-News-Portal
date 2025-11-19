@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    protected $baseRouteAdmin = 'tenant.admin.pages.';
     /**
      * Display the tenant admin dashboard
      */
@@ -43,7 +44,10 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('tenant.dashboard', compact(
+        // Determine primary domain for this tenant (tenant helper is available because tenancy middleware runs)
+        $domain = tenant('domain') ?? optional(tenant())->domains->first()->domain ?? null;
+
+        return view($this->baseRouteAdmin . 'dashboard.index', compact(
             'totalNews',
             'publishedNews',
             'draftNews',
@@ -51,7 +55,8 @@ class DashboardController extends Controller
             'activeCategories',
             'totalUsers',
             'recentNews',
-            'popularCategories'
+            'popularCategories',
+            'domain'
         ));
     }
 }

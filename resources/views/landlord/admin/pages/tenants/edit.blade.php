@@ -1,4 +1,4 @@
-@extends('landlord.layout')
+@extends('landlord.admin.layouts.index')
 
 @section('title', 'Edit Tenant - ' . $tenant->name)
 
