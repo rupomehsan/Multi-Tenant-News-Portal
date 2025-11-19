@@ -3,7 +3,12 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "track": "node .deploy_tools/tracker.js",
+        "deploy:project": "bash .deploy_tools/deploy_to_vps.sh",
+        "deploy:files": "bash .deploy_tools/deploy_to_vps_via_file_tracking.sh",
+        "deploy:fix-404": "ssh -i $HOME/.ssh/id_rsa root@161.248.201.157 'cd /www/wwwroot/news-saas.techparkit.info && bash .deploy_tools/fix_404.sh'",
+        "deploy:fix-permissions": "ssh -i $HOME/.ssh/id_rsa root@161.248.201.157 'cd /www/wwwroot/news-saas.techparkit.info && chown -R www:www . && chmod -R 755 . && chmod -R 775 storage bootstrap/cache && echo \"✅ Permissions fixed!\"'"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",

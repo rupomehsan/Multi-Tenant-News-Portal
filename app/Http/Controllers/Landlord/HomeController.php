@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -175,6 +177,7 @@ class HomeController extends Controller
 
     /**
      * Get total articles across all tenants
+     * Safely handles tenant database access with error handling
      */
     private function getTotalArticles()
     {
@@ -182,9 +185,24 @@ class HomeController extends Controller
         $tenants = \App\Models\Tenant::all();
 
         foreach ($tenants as $tenant) {
-            tenancy()->initialize($tenant);
-            $total += \App\Models\News::count();
-            tenancy()->end();
+            try {
+                // Initialize tenant context
+                tenancy()->initialize($tenant);
+
+                // Verify tenant database connection is active
+                if (DB::connection('tenant')->getDatabaseName()) {
+                    $total += \App\Models\News::count();
+                }
+            } catch (\Exception $e) {
+                // Log the error but continue counting other tenants
+                Log::warning("Failed to count articles for tenant {$tenant->id}: {$e->getMessage()}");
+
+                // Optionally, you can collect failed tenants for admin notification
+                // $this->failedTenants[] = $tenant->id;
+            } finally {
+                // Always end tenancy context, even if an error occurred
+                tenancy()->end();
+            }
         }
 
         return $total;

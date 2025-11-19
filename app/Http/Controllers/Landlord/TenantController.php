@@ -48,9 +48,10 @@ class TenantController extends Controller
             'is_active' => true,
         ]);
 
-        // Create domain
+        // Create domain with production-ready subdomain
+        $centralDomain = config('tenancy.central_domains')[0] ?? 'news-saas.techparkit.info';
         $tenant->domains()->create([
-            'domain' => $request->domain . '.' . config('app.domain', 'localhost'),
+            'domain' => $request->domain . '.' . $centralDomain,
         ]);
 
         return redirect()->route('landlord.tenants.index')

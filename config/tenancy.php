@@ -17,9 +17,10 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
-        '127.0.0.1',
-        'localhost',
-        env('CENTRAL_DOMAIN', null),
+        env('CENTRAL_DOMAIN', 'news-saas.techparkit.info'),
+        // Add localhost for local development only
+        // '127.0.0.1',
+        // 'localhost',
     ],
 
     /**
@@ -66,6 +67,8 @@ return [
             /**
          * Use this database manager for MySQL to have a DB user created for each tenant database.
          * You can customize the grants given to these users by changing the $grants property.
+         * NOTE: This requires GRANT OPTION privilege. For most setups, use MySQLDatabaseManager above
+         * with wildcard GRANT permissions (see MYSQL_PERMISSIONS_SETUP.md)
          */
             // 'mysql' => Stancl\Tenancy\TenantDatabaseManagers\PermissionControlledMySQLDatabaseManager::class,
 

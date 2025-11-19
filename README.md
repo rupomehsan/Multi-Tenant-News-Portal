@@ -2,6 +2,66 @@
 
 A comprehensive multi-tenant news portal system built with Laravel 10 and the stancl/tenancy package. Each tenant gets their own isolated database, domain/subdomain access, and complete news management capabilities.
 
+**🌐 Production Domain:** `https://news-saas.techparkit.info`  
+**🔗 Example Tenant:** `https://test.news-saas.techparkit.info`
+
+---
+
+## 🚀 Production Deployment
+
+### 📚 Complete Production Guides
+
+| Guide                                                              | Purpose                                              | Start Here?       |
+| ------------------------------------------------------------------ | ---------------------------------------------------- | ----------------- |
+| **[PRODUCTION_QUICK_REFERENCE.md](PRODUCTION_QUICK_REFERENCE.md)** | ⚡ Quick reference card - Commands & troubleshooting | ✅ **First!**     |
+| **[PRODUCTION_COMPLETE_SETUP.md](PRODUCTION_COMPLETE_SETUP.md)**   | 📋 Complete step-by-step production setup            | ✅ **Start here** |
+| **[MYSQL_PERMISSIONS_SETUP.md](MYSQL_PERMISSIONS_SETUP.md)**       | 🔐 MySQL permissions for tenant DB creation          | Required          |
+| **[CLOUDFLARE_DNS_SETUP.md](CLOUDFLARE_DNS_SETUP.md)**             | 🌐 DNS and wildcard subdomain configuration          | Required          |
+| **[PRODUCTION_SSL_SETUP.md](PRODUCTION_SSL_SETUP.md)**             | 🔒 SSL certificate setup (Cloudflare/Let's Encrypt)  | Required          |
+| **[NGINX_AAPANEL_CONFIG.md](NGINX_AAPANEL_CONFIG.md)**             | ⚙️ NGINX configuration for aaPanel                   | Required          |
+| **[TENANT_VERIFICATION_GUIDE.md](TENANT_VERIFICATION_GUIDE.md)**   | ✅ Tenant health checks and verification             | Verification      |
+| **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**                     | 🚀 General deployment workflow                       | Reference         |
+
+### ⚡ Quick Start Commands
+
+```bash
+# Health check
+php artisan tenant:health [--fix]
+
+# Verify tenant creation
+php artisan tenant:verify {tenant_id} [--detailed]
+
+# List all tenants
+php artisan tenants:list
+
+# Clear caches
+php artisan cache:clear && php artisan config:clear
+```
+
+### 🔧 Critical Production Settings
+
+```env
+# .env
+APP_URL=https://news-saas.techparkit.info
+CENTRAL_DOMAIN=news-saas.techparkit.info
+DB_DATABASE=news_saas
+DB_USERNAME=news_saas
+```
+
+```sql
+-- MySQL Permissions (one-time setup)
+GRANT ALL PRIVILEGES ON `tenant%`.* TO 'news_saas'@'localhost';
+GRANT CREATE, DROP ON *.* TO 'news_saas'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+```nginx
+# NGINX
+server_name news-saas.techparkit.info *.news-saas.techparkit.info;
+```
+
+---
+
 ## 🏗️ Architecture Overview
 
 ```
@@ -188,6 +248,58 @@ Each tenant operates independently with:
 ## 📄 License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+
+## 📚 Production Deployment & Troubleshooting
+
+### Essential Documentation
+
+| Document                                                         | Purpose                                                 |
+| ---------------------------------------------------------------- | ------------------------------------------------------- |
+| **[QUICK_START.md](QUICK_START.md)**                             | 🚀 Quick reference for deployment and common tasks      |
+| **[MYSQL_PERMISSIONS_SETUP.md](MYSQL_PERMISSIONS_SETUP.md)**     | 🔐 MySQL permissions for multi-tenant database creation |
+| **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**                   | 📋 Complete deployment workflow and checklist           |
+| **[TENANT_VERIFICATION_GUIDE.md](TENANT_VERIFICATION_GUIDE.md)** | ✅ Tenant verification and validation procedures        |
+| **[PRODUCTION_ISSUE_SUMMARY.md](PRODUCTION_ISSUE_SUMMARY.md)**   | 📊 Complete analysis of production issues and solutions |
+
+### Quick Commands
+
+```bash
+# Deploy to production
+npm run track && npm run deploy:files
+
+# Verify tenant health
+php artisan tenant:health
+
+# Check specific tenant
+php artisan tenant:verify {tenant_id}
+
+# Fix common issues
+php artisan tenant:health --fix
+```
+
+### Production Checklist
+
+**Before First Deployment:**
+
+-   [ ] Apply MySQL permissions (see `MYSQL_PERMISSIONS_SETUP.md`)
+-   [ ] Configure `.env` with production database credentials
+-   [ ] Set `CENTRAL_DOMAIN` in `.env`
+
+**After Every Deployment:**
+
+-   [ ] Clear Laravel cache: `php artisan cache:clear`
+-   [ ] Run health check: `php artisan tenant:health`
+-   [ ] Verify tenant creation works
+
+**After Creating New Tenant:**
+
+-   [ ] Run: `php artisan tenant:verify {tenant_id}`
+-   [ ] Test subdomain accessibility
+-   [ ] Check tenant database exists
+
+For detailed instructions, see **[QUICK_START.md](QUICK_START.md)**
 
 ---
 

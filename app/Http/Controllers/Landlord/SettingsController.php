@@ -37,11 +37,9 @@ class SettingsController extends Controller
             'logo' => 'nullable|image|max:2048',
         ]);
 
-        // Handle logo upload
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('public/site-logos');
-            $url = Storage::url($path); // e.g. /storage/site-logos/...
-            $data['site_logo'] = $url;
+            $data['site_logo'] = Storage::url($path);
         }
 
         $settingsPath = storage_path('app/landlord_settings.json');

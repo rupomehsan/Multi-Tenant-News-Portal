@@ -132,7 +132,7 @@
                                 {{ $article->is_published ? 'Published' : 'Draft' }}
                             </p>
                         </div>
-                        <a href="http://{{ $tenant->domains->first()->domain ?? 'localhost' }}:8000/news/{{ $article->slug }}"
+                        <a href="https://{{ $tenant->domains->first()->domain ?? 'localhost' }}/news/{{ $article->slug }}"
                             target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                             View →
                         </a>

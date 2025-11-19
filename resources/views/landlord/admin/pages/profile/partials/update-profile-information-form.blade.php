@@ -1,6 +1,5 @@
 <section>
     @php
-        // Ensure $user is available in the partial; fall back to the authenticated user
         $user = $user ?? auth()->user();
     @endphp
     <header>

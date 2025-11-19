@@ -152,7 +152,7 @@
                             </td>
                             <td class="px-4 py-3 text-sm text-gray-700">
                                 @if ($tenant->domains->count() > 0)
-                                    <a href="http://{{ $tenant->domains->first()->domain }}:8000" target="_blank"
+                                    <a href="https://{{ $tenant->domains->first()->domain }}" target="_blank"
                                         class="text-indigo-600 hover:underline">{{ $tenant->domains->first()->domain }}</a>
                                 @else
                                     <span class="text-gray-400">No domain</span>
